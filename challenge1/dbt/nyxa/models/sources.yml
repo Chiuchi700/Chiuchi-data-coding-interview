@@ -1,0 +1,145 @@
+
+version: 2
+
+# Fix source schema
+# Add missing sources
+
+sources:
+  - name: any_data
+    description: DW raw data
+    schema: random_schema_name
+    database: dw_flights
+    tables:
+      - name: airlines
+        description: Airlines
+        columns:
+          - name: carrier
+            description: Airline code
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: Airline name
+            tests:
+              - not_null
+
+      - name: airports
+        description: Airports
+        columns:
+          - name: faa
+            description: Airport FAA code
+            tests:
+              - unique
+              - not null
+          - name: name
+            description: Airport name
+            tests:
+              - not null
+          - name: latitude
+            tests:
+              - not null
+          - name: longitude
+            tests:
+              - not null
+          - name: altitude
+            tests:
+              - not null
+          - name: timezone
+            tests:
+              - not null
+          - name: dst
+            tests:
+              - not null
+          - name: timezone_name
+            tests:
+              - not null
+
+      - name: flights
+        description: Flights history
+        columns:
+          - name: carrier
+            tests:
+              - relationships:
+                    to: source('raw', 'airlines')
+                    field: carrier
+          - name: flight
+            tests:
+              - not null
+          - name: year
+            tests:
+              - not null
+          - name: month
+            tests:
+              - not null
+          - name: day
+            tests:
+              - not null
+          - name: hour
+            tests:
+              - not null
+          - name: minute
+            tests:
+              - not null
+          - name: actual_dep_time
+          - name: schedule_dep_time
+          - name: dep_delay
+          - name: actual_arr_time
+          - name: sched_arr_time
+          - name: arr_delay
+          - name: tailnum
+            tests:
+              - not null
+              - relationships:
+                  to: source('raw', 'planes')
+                  field: tailnum
+          - name: origin
+            tests:
+              - not null
+              - relationships:
+                  to: source('raw', 'airports')
+                  field: faa
+          - name: dest
+            tests:
+              - not null
+              - relationships:
+                  to: source('raw', 'airports')
+                  field: faa
+          - name: air_time
+            tests:
+              - not null
+          - name: distance
+            tests:
+              - not null
+          - name: time_hour
+            tests:
+              - not null
+
+      - name: planes
+        description: Planes
+        columns:
+          - name: tailnum
+            description: Plane tailnum identifier
+            tests:
+              - unique
+              - not null
+          - name: year
+            description: Plane built year
+          - name: type
+            tests:
+              - not null
+          - name: manufacturer
+            tests:
+              - not null
+          - name: model
+            tests:
+              - not null
+          - name: engines
+            tests:
+              - not null
+          - name: seats
+            tests:
+              - not null
+          - name: speed
+          - name: engine
+            tests:
+              - not null
