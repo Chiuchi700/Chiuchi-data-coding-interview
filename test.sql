@@ -11,5 +11,21 @@ WHERE table_name = 'airports'
 ORDER BY ordinal_position;
 
 SELECT *
+FROM airlines
+LIMIT 10;
+
+SELECT *
 FROM airports
+LIMIT 10;
+
+SELECT *
+FROM flights
+LIMIT 10;
+
+SELECT *
+FROM planes
+LIMIT 10;
+
+SELECT *
+FROM weather
 LIMIT 10;
